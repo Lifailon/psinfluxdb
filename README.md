@@ -1,7 +1,7 @@
 # psinflux
 
 **PowerShell module for interaction to InfluxDB v1 (using REST API)** \
-By default GET requests give line-by output. This module for output in object format. \
+By default GET requests give line-by output. This module for creat and output in **object format**. \
 Version 0.1: only GET requests.
 
 ## Examples:
