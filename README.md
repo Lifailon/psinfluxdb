@@ -1,9 +1,15 @@
 # psinflux
 
-**PowerShell module for interaction to InfluxDB v1.**
+**PowerShell module for interaction to InfluxDB v1 (using REST API)** \
+By default GET requests give line-by output. This module for output in object format. \
+Version 0.1: only GET requests.
 
-### Get-InfluxData
+Get-InfluxUsers -ip 192.168.3.104
 
-By default GET requests give line-by output. This function for output in object format:
+Get-InfluxDatabases -ip 192.168.3.104
 
-![Image alt](https://github.com/Lifailon/psinflux/blob/rsa/Get-InfluxData.jpg)
+Get-InfluxTables -ip 192.168.3.104 -database powershell
+
+Get-InfluxData -ip 192.168.3.104 -database powershell -table speedtest | ft
+
+Get-InfluxData -ip 192.168.3.104 -database powershell -table speedtest -user root -password root
