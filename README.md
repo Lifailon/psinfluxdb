@@ -6,12 +6,6 @@ Version 0.1: only GET requests.
 
 ## Examples:
 ```
-PS C:\Users\Lifailon> Get-InfluxTables -ip 192.168.3.104 -database powershell
-performance
-speedtest
-```
-
-```
 PS C:\Users\Lifailon> Get-InfluxUsers -ip 192.168.3.104
 user  admin
 ----  -----
