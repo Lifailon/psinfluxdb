@@ -65,7 +65,7 @@ time                host            rtime status
 
 ### Chart (version 0.2)
 
-The Grafana Alternative (used WinForms) \
+The Grafana alternative (used WinForms) \
 **Source:** https://webnote.satin-pl.com/2019/04/03/posh_influxdb_query
 
 ```
