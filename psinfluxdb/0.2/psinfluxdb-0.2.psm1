@@ -4,7 +4,7 @@
 # Get-InfluxUsers -ip 192.168.3.104
 # Get-InfluxDatabases -ip 192.168.3.104
 # Get-InfluxTables -ip 192.168.3.104 -database powershell
-# Get-InfluxData -ip 192.168.3.104 -database powershell -table piing | ft
+# Get-InfluxData -ip 192.168.3.104 -database powershell -table ping | ft
 # Get-InfluxData -ip 192.168.3.104 -database powershell -table performance -user root -password root
 # $influx = Get-InfluxData -ip 192.168.3.104 -database powershell -table speedtest
 # Get-InfluxChart -time ($influx.time) -data ($influx.download) -title "SpeedTest Download" -path "C:\Users\Lifailon\Desktop"
@@ -156,7 +156,7 @@ $AnchorAll = [System.Windows.Forms.AnchorStyles]::Bottom -bor [System.Windows.Fo
 [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Left
 
 if ($path) {
-	$Chart.SaveImage("$path\chart.jpeg", "jpeg")
+	$Chart.SaveImage("$path\Chart.jpeg", "jpeg")
 }
 
 $main_form = New-Object Windows.Forms.Form
