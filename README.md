@@ -4,6 +4,19 @@
 By default GET requests give line-by output. This module is used to automate the query form and output in **object format** \
 Version 0.1: only GET requests
 
+## Import
+```
+PS C:\Windows\System32> Import-Module ~\Documents\psinfluxdb\psinfluxdb.psm1
+PS C:\Windows\System32> Get-Command -Module psinfluxdb | select Name
+
+Name
+----
+Get-InfluxData
+Get-InfluxDatabases
+Get-InfluxTables
+Get-InfluxUsers
+```
+
 ## Examples:
 ```
 PS C:\Users\Lifailon> Get-InfluxUsers -ip 192.168.3.104
