@@ -65,7 +65,8 @@ time                host            rtime status
 
 ### Chart (version 0.2)
 
-**Source:** https://webnote.satin-pl.com/2019/04/03/posh_influxdb_query/
+The Grafana Alternative (used WinForms) \
+**Source:** https://webnote.satin-pl.com/2019/04/03/posh_influxdb_query
 
 ```
 $influx = Get-InfluxData -ip 192.168.3.104 -database powershell -table speedtest
