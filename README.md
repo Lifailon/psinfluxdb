@@ -72,4 +72,4 @@ $influx = Get-InfluxData -ip 192.168.3.104 -database powershell -table speedtest
 Get-InfluxChart -time ($influx.time) -data ($influx.download) -title "SpeedTest Download" -path "C:\Users\Lifailon\Desktop"
 ```
 
-![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/Screen/Chart.jpg)
+![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/Screen/Chart.jpeg)
