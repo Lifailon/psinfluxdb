@@ -6,15 +6,16 @@ Version 0.1: only GET requests
 
 ## Import
 ```
-PS C:\Windows\System32> Import-Module ~\Documents\psinfluxdb\psinfluxdb.psm1
-PS C:\Windows\System32> Get-Command -Module psinfluxdb | select Name
+PS C:\Users\Lifailon> import-Module psinfluxdb
+PS C:\Users\Lifailon> Get-Command -Module psinfluxdb
 
-Name
-----
-Get-InfluxData
-Get-InfluxDatabases
-Get-InfluxTables
-Get-InfluxUsers
+CommandType     Name                  Version    Source
+-----------     ----                  -------    ------
+Function        Get-InfluxChart       0.2        psinfluxdb
+Function        Get-InfluxData        0.2        psinfluxdb
+Function        Get-InfluxDatabases   0.2        psinfluxdb
+Function        Get-InfluxTables      0.2        psinfluxdb
+Function        Get-InfluxUsers       0.2        psinfluxdb
 ```
 
 ## Examples:
@@ -39,34 +40,32 @@ powershell
 PS C:\Users\Lifailon> Get-InfluxTables -ip 192.168.3.104 -database powershell
 
 performance
+ping
 speedtest
 ```
 ```
-PS C:\Users\Lifailon> Get-InfluxData -ip 192.168.3.104 -database powershell -table speedtest | ft
+PS C:\Users\Lifailon> Get-InfluxData -ip 192.168.3.104 -database powershell -table ping | ft
 
-time                download host            ping upload
-----                -------- ----            ---- ------
-07/06/2023-20:00:11 291172   HUAWEI-MB-X-PRO 3    280829
-07/06/2023-20:12:15 308885   HUAWEI-MB-X-PRO 3    307078
-07/06/2023-20:46:29 311197   HUAWEI-MB-X-PRO 3    284526
-07/06/2023-20:48:44 312540   HUAWEI-MB-X-PRO 3    284669
-07/06/2023-20:51:00 312861   HUAWEI-MB-X-PRO 3    279900
-07/06/2023-20:53:17 313120   HUAWEI-MB-X-PRO 3    282298
-07/06/2023-20:55:33 312638   HUAWEI-MB-X-PRO 3    237256
-07/06/2023-20:57:50 311915   HUAWEI-MB-X-PRO 3    280594
-07/06/2023-21:00:07 295804   HUAWEI-MB-X-PRO 3    219438
-07/06/2023-21:02:23 307016   HUAWEI-MB-X-PRO 3    249504
-07/06/2023-21:04:39 267358   HUAWEI-MB-X-PRO 4    212225
-07/06/2023-21:06:55 309878   HUAWEI-MB-X-PRO 3    228684
-07/06/2023-21:09:10 308277   HUAWEI-MB-X-PRO 3    256097
-07/06/2023-21:11:26 312194   HUAWEI-MB-X-PRO 2    253876
-07/06/2023-21:13:42 292125   HUAWEI-MB-X-PRO 3    143308
-07/06/2023-21:15:57 307825   HUAWEI-MB-X-PRO 3    235829
-07/06/2023-21:18:13 311578   HUAWEI-MB-X-PRO 3    225315
-07/06/2023-21:20:29 311019   HUAWEI-MB-X-PRO 4    242643
-07/06/2023-21:22:44 308873   HUAWEI-MB-X-PRO 3    243114
-07/06/2023-21:24:59 306217   HUAWEI-MB-X-PRO 3    211599
+time                host            rtime status
+----                ----            ----- ------
+07/08/2023-15:16:24 HUAWEI-MB-X-Pro 22    True
+07/08/2023-15:16:29 HUAWEI-MB-X-Pro 20    True
+07/08/2023-15:16:35 HUAWEI-MB-X-Pro 20    True
+07/08/2023-15:16:41 HUAWEI-MB-X-Pro 20    True
+07/08/2023-15:16:51 HUAWEI-MB-X-Pro 0     False
+07/08/2023-15:17:06 HUAWEI-MB-X-Pro 32    True
+07/08/2023-15:17:16 HUAWEI-MB-X-Pro 22    True
+07/08/2023-15:17:27 HUAWEI-MB-X-Pro 20    True
+07/08/2023-15:17:37 HUAWEI-MB-X-Pro 20    True
+07/08/2023-15:17:47 HUAWEI-MB-X-Pro 21    True
 ...
 ```
 
-![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/Example.jpg)
+![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/Screen/Example.jpg)
+
+```
+$influx = Get-InfluxData -ip 192.168.3.104 -database powershell -table speedtest
+Get-InfluxChart -time ($influx.time) -data ($influx.download) -title "SpeedTest Download" -path "C:\Users\Lifailon\Desktop"
+```
+
+![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/Screen/Chart.jpg)
