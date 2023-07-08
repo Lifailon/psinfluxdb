@@ -1,12 +1,13 @@
 # psinflux
 
 **PowerShell module for interaction to InfluxDB v1 (using REST API)** \
-By default GET requests give line-by output. This module for creat and output in **object format**. \
-Version 0.1: only GET requests.
+By default GET requests give line-by output. This module is used to automate the query form and output in **object format** \
+Version 0.1: only GET requests
 
 ## Examples:
 ```
 PS C:\Users\Lifailon> Get-InfluxUsers -ip 192.168.3.104
+
 user  admin
 ----  -----
 admin True
@@ -16,17 +17,20 @@ read  False
 
 ```
 PS C:\Users\Lifailon> Get-InfluxDatabases -ip 192.168.3.104
+
 _internal
 powershell
 ```
 
 ```
 PS C:\Users\Lifailon> Get-InfluxTables -ip 192.168.3.104 -database powershell
+
 performance
 speedtest
 ```
 ```
 PS C:\Users\Lifailon> Get-InfluxData -ip 192.168.3.104 -database powershell -table speedtest | ft
+
 time                download host            ping upload
 ----                -------- ----            ---- ------
 07/06/2023-20:00:11 291172   HUAWEI-MB-X-PRO 3    280829
