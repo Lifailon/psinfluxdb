@@ -6,7 +6,7 @@ Only GET requests.
 
 ## Import
 ```
-PS C:\Users\Lifailon> import-Module psinfluxdb
+PS C:\Users\Lifailon> Import-Module psinfluxdb
 PS C:\Users\Lifailon> Get-Command -Module psinfluxdb
 
 CommandType     Name                  Version    Source
