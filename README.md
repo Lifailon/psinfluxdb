@@ -68,9 +68,11 @@ time                host            rtime status
 The Grafana alternative (used WinForms) \
 **Source:** https://webnote.satin-pl.com/2019/04/03/posh_influxdb_query
 
-```
-$influx = Get-InfluxData -ip 192.168.3.104 -database powershell -table speedtest
-Get-InfluxChart -time ($influx.time) -data ($influx.download) -title "SpeedTest Download" -path "C:\Users\Lifailon\Desktop"
-```
+`$influx = Get-InfluxData -ip 192.168.3.104 -database powershell -table speedtest` \
+`Get-InfluxChart -time ($influx.time) -data ($influx.download) -title "SpeedTest Download" -path "C:\Users\Lifailon\Desktop"`
 
-![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/Screen/Chart.jpeg)
+![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/Screen/Chart-Download.jpeg)
+
+`Get-InfluxChart -time ($influx.time) -data ($influx.upload) -title "SpeedTest Upload" -path "C:\Users\Lifailon\Desktop"`
+
+![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/Screen/Chart-Upload.jpeg)
