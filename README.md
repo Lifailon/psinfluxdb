@@ -1,26 +1,39 @@
-# psinflux
+# psinfluxdb
 
-**PowerShell module for interaction to InfluxDB1 (using REST API)**. \
+**PowerShell module for interaction to InfluxDB 1.x via API**. \
 By default GET requests give line-by output. This module is used to automate the query form and output in **object format**. \
 Only GET requests.
 
-## Import
-```
-PS C:\Users\Lifailon> Import-Module psinfluxdb
-PS C:\Users\Lifailon> Get-Command -Module psinfluxdb
+## Install
 
-CommandType     Name                  Version    Source
------------     ----                  -------    ------
-Function        Get-InfluxChart       0.2        psinfluxdb
-Function        Get-InfluxData        0.2        psinfluxdb
-Function        Get-InfluxDatabases   0.2        psinfluxdb
-Function        Get-InfluxTables      0.2        psinfluxdb
-Function        Get-InfluxUsers       0.2        psinfluxdb
+Install module from [NuGet repository](https://www.nuget.org/packages/psinfluxdb):
+
+```PowerShell
+Install-Module psinfluxdb -Repository NuGet
+```
+
+Import module:
+
+```PowerShell
+PS C:\Users\Lifailon> Import-Module psinfluxdb
+PS C:\Users\lifailon> Get-Command -Module psinfluxdb
+
+CommandType     Name                      Version    Source
+-----------     ----                      -------    ------
+Function        Get-InfluxChart           0.3        psinfluxdb
+Function        Get-InfluxData            0.3        psinfluxdb
+Function        Get-InfluxDatabases       0.3        psinfluxdb
+Function        Get-InfluxPolicy          0.3        psinfluxdb
+Function        Get-InfluxTables          0.3        psinfluxdb
+Function        Get-InfluxUsers           0.3        psinfluxdb
 ```
 
 ## Examples:
-```
-PS C:\Users\Lifailon> Get-InfluxUsers -ip 192.168.3.104
+
+Get user list:
+
+```PowerShell
+PS C:\Users\Lifailon> Get-InfluxUsers -server 192.168.3.102
 
 user  admin
 ----  -----
@@ -29,22 +42,85 @@ root  True
 read  False
 ```
 
-```
-PS C:\Users\Lifailon> Get-InfluxDatabases -ip 192.168.3.104
+Get database list:
+
+```PowerShell
+PS C:\Users\Lifailon> Get-InfluxDatabases -server 192.168.3.102
 
 _internal
-powershell
+PowerShell
 ```
 
+Creat and delete database:
+
+```PowerShell
+PS C:\Users\lifailon> Get-InfluxDatabases -server 192.168.3.102 -creat -database test
+
+_internal
+PowerShell
+test
+
+PS C:\Users\lifailon> Get-InfluxDatabases -server 192.168.3.102 -delete -database test
+
+_internal
+PowerShell
 ```
-PS C:\Users\Lifailon> Get-InfluxTables -ip 192.168.3.104 -database powershell
+
+Database storage policies (creat and set default):
+
+```PowerShell
+PS C:\Users\lifailon> Get-InfluxPolicy -server 192.168.3.102 -database PowerShell
+
+name               : autogen
+duration           : 0s
+shardGroupDuration : 168h0m0s
+replicaN           : 1
+default            : True
+
+PS C:\Users\lifailon> Get-InfluxPolicy -server 192.168.3.102 -database PowerShell -creat -policyName del2d -hours 48
+
+name               : autogen
+duration           : 0s
+shardGroupDuration : 168h0m0s
+replicaN           : 1
+default            : True
+
+name               : del2d
+duration           : 48h0m0s
+shardGroupDuration : 24h0m0s
+replicaN           : 1
+default            : False
+
+PS C:\Users\lifailon> Get-InfluxPolicy -server 192.168.3.102 -database PowerShell -policyName del2d -default
+
+name               : autogen
+duration           : 0s
+shardGroupDuration : 168h0m0s
+replicaN           : 1
+default            : False
+
+name               : del2d
+duration           : 48h0m0s
+shardGroupDuration : 24h0m0s
+replicaN           : 1
+default            : True
+```
+
+Get table (measurement) list:
+
+```PowerShell
+PS C:\Users\Lifailon> Get-InfluxTables -server 192.168.3.102 -database PowerShell
 
 performance
 ping
 speedtest
+HardwareMonitor
 ```
-```
-PS C:\Users\Lifailon> Get-InfluxData -ip 192.168.3.104 -database powershell -table ping | ft
+
+Get data from table (measurement) selected:
+
+```PowerShell
+PS C:\Users\Lifailon> Get-InfluxData -server 192.168.3.102 -database PowerShell -table ping | ft
 
 time                host            rtime status
 ----                ----            ----- ------
@@ -61,18 +137,80 @@ time                host            rtime status
 ...
 ```
 
-![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/Screen/Example.jpg)
+![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/image/Example.jpg)
 
-### Chart (version 0.2)
+Get data for the last 30 minutes from [HardwareMonitor](https://github.com/Lifailon/PowerShellHardwareMonitor):
 
-The Grafana alternative (used WinForms) \
-**Source:** https://webnote.satin-pl.com/2019/04/03/posh_influxdb_query
+```PowerShell
+PS C:\Users\lifailon> Get-InfluxData -server 192.168.3.102 -database PowerShell -table HardwareMonitor -minutes 30 | Format-Table
 
-`$influx = Get-InfluxData -ip 192.168.3.104 -database powershell -table speedtest` \
+time                HardwareName                  Host        SensorName                     SensorType     Value
+----                ------------                  ----        ----------                     ----------     -----
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     CPU_Core_#1                    Temperature_0  24
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     CPU_Core_#1_Distance_to_TjMax  Temperature_7  76
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     CPU_Core_#2                    Temperature_1  24
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     CPU_Core_#2_Distance_to_TjMax  Temperature_8  76
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     CPU_Core_#3                    Temperature_2  23
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     CPU_Core_#3_Distance_to_TjMax  Temperature_9  77
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     CPU_Core_#4                    Temperature_3  22
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     CPU_Core_#4_Distance_to_TjMax  Temperature_10 78
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     CPU_Core_#5                    Temperature_4  23
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     CPU_Core_#5_Distance_to_TjMax  Temperature_11 77
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     CPU_Core_#6                    Temperature_5  22
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     CPU_Core_#6_Distance_to_TjMax  Temperature_12 78
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     CPU_Package                    Temperature_6  24
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     Core_Average                   Temperature_14 23
+02/03/2024-22:27:45 Intel_Core_i5-10400           PLEX-01     Core_Max                       Temperature_13 24
+02/03/2024-22:27:45 MSI_M390_250GB                PLEX-01     Temperature                    Temperature_0  34
+02/03/2024-22:27:45 Nuvoton_NCT6687D              PLEX-01     CPU                            Temperature_0  28
+02/03/2024-22:27:45 Nuvoton_NCT6687D              PLEX-01     CPU_Socket                     Temperature_4  27
+02/03/2024-22:27:45 Nuvoton_NCT6687D              PLEX-01     M2_1                           Temperature_6  23
+02/03/2024-22:27:45 Nuvoton_NCT6687D              PLEX-01     PCH                            Temperature_3  36
+02/03/2024-22:27:45 Nuvoton_NCT6687D              PLEX-01     PCIe_x1                        Temperature_5  29
+02/03/2024-22:27:45 Nuvoton_NCT6687D              PLEX-01     System                         Temperature_1  30
+02/03/2024-22:27:45 Nuvoton_NCT6687D              PLEX-01     VRM_MOS                        Temperature_2  36
+02/03/2024-22:27:45 Radeon_RX_570_Series          PLEX-01     GPU_Core                       Temperature_0  34
+02/03/2024-22:27:45 ST1000DM003-1CH162            PLEX-01     Temperature                    Temperature_0  31
+02/03/2024-22:27:45 WDC_WD2005FBYZ-01YCBB2        PLEX-01     Temperature                    Temperature_0  33
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#1                    Temperature_0  47
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#10                   Temperature_9  45
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#10_Distance_to_TjMax Temperature_22 55
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#11                   Temperature_10 45
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#11_Distance_to_TjMax Temperature_23 55
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#12                   Temperature_11 45
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#12_Distance_to_TjMax Temperature_24 55
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#1_Distance_to_TjMax  Temperature_13 53
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#2                    Temperature_1  48
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#2_Distance_to_TjMax  Temperature_14 52
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#3                    Temperature_2  47
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#3_Distance_to_TjMax  Temperature_15 53
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#4                    Temperature_3  45
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#4_Distance_to_TjMax  Temperature_16 55
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#5                    Temperature_4  50
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#5_Distance_to_TjMax  Temperature_17 50
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#6                    Temperature_5  50
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#6_Distance_to_TjMax  Temperature_18 50
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#7                    Temperature_6  50
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#7_Distance_to_TjMax  Temperature_19 50
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#8                    Temperature_7  50
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#8_Distance_to_TjMax  Temperature_20 50
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#9                    Temperature_8  45
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Core_#9_Distance_to_TjMax  Temperature_21 55
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK CPU_Package                    Temperature_12 50
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK Core_Average                   Temperature_26 47
+02/03/2024-22:27:50 12th_Gen_Intel_Core_i7-1260P  HUAWEI-BOOK Core_Max                       Temperature_25 50
+...
+```
+
+### Charts
+
+The Grafana alternative (used **WinForms**) to create graphs from data obtained with the [Ookla-SpeedTest](https://github.com/Lifailon/Ookla-SpeedTest-API) module.
+
+`$influx = Get-InfluxData -server 192.168.3.104 -database PowerShell -table speedtest` \
 `Get-InfluxChart -time ($influx.time) -data ($influx.download) -title "SpeedTest Download" -path "C:\Users\Lifailon\Desktop"`
 
-![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/Screen/Chart-Download.jpeg)
+![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/image/Chart-Download.jpeg)
 
 `Get-InfluxChart -time ($influx.time) -data ($influx.upload) -title "SpeedTest Upload" -path "C:\Users\Lifailon\Desktop"`
 
-![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/Screen/Chart-Upload.jpeg)
+![Image alt](https://github.com/Lifailon/psinfluxdb/blob/rsa/image/Chart-Upload.jpeg)
