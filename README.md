@@ -1,10 +1,10 @@
-# psinfluxdb
+# 📊 psinfluxdb
 
 **PowerShell module for interaction to InfluxDB 1.x via API**. \
 By default GET requests give line-by output. This module is used to automate the query form and output in **object format**. \
 Only GET requests.
 
-## Install
+## 🚀 Install
 
 Install module from [NuGet repository](https://www.nuget.org/packages/psinfluxdb):
 
@@ -28,7 +28,7 @@ Function        Get-InfluxTables          0.3        psinfluxdb
 Function        Get-InfluxUsers           0.3        psinfluxdb
 ```
 
-## Examples:
+## 📚 Examples
 
 Get user list:
 
@@ -202,7 +202,7 @@ time                HardwareName                  Host        SensorName        
 ...
 ```
 
-### Charts
+## 📈 Charts
 
 The Grafana alternative (used **WinForms**) to create graphs from data obtained with the [Ookla-SpeedTest](https://github.com/Lifailon/Ookla-SpeedTest-API) module.
 
