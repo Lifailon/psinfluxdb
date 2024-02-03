@@ -1,4 +1,4 @@
-# 📊 psinfluxdb
+# psinfluxdb
 
 **PowerShell module for interaction to InfluxDB 1.x via API**. \
 By default GET requests give line-by output. This module is used to automate the query form and output in **object format**. \
