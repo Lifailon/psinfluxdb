@@ -1,5 +1,10 @@
 # psinfluxdb
 
+[![GitHub Release](https://img.shields.io/github/v/release/Lifailon/psinfluxdb?display_name=release&logo=GitHub&label=GitHub&link=https%3A%2F%2Fgithub.com%2FLifailon%2Fpsinfluxdb%2F)](https://github.com/Lifailon/psinfluxdb)
+[![NuGet Version](https://img.shields.io/nuget/v/psinfluxdb?logo=NuGet&label=NuGet&link=https%3A%2F%2Fwww.nuget.org%2Fpackages%2Fpsinfluxdb)](https://www.nuget.org/packages/psinfluxdb)
+[![GitHub top language](https://img.shields.io/github/languages/top/Lifailon/psinfluxdb?logo=PowerShell&link=https%3A%2F%2Fgithub.com%2FPowerShell%2FPowerShell)](https://github.com/PowerShell/PowerShell)
+[![GitHub License](https://img.shields.io/github/license/Lifailon/psinfluxdb?link=https%3A%2F%2Fgithub.com%2FLifailon%2Fpsinfluxdb%2Fblob%2Frsa%2FLICENSE)](https://github.com/Lifailon/psinfluxdb/blob/rsa/LICENSE)
+
 **PowerShell module for interaction to InfluxDB 1.x via API**. \
 By default GET requests give line-by output. This module is used to automate the query form and output in **object format**. \
 Only GET requests.
