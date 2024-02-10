@@ -207,6 +207,21 @@ time                HardwareName                  Host        SensorName        
 ...
 ```
 
+💡 Now we can filter the received data in the usual way (without resorting to SQL queries):
+
+```PowerShell
+$Data | Where-Object {$_.SensorName -match "Package" -and $_.Value -gt 90} | Format-Table
+
+time                HardwareName                 Host        SensorName  SensorType     Value
+----                ------------                 ----        ----------  ----------     -----
+02/10/2024-19:05:24 12th_Gen_Intel_Core_i7-1260P HUAWEI-BOOK CPU_Package Temperature_12 95
+02/10/2024-19:20:01 12th_Gen_Intel_Core_i7-1260P HUAWEI-BOOK CPU_Package Temperature_12 92
+02/10/2024-19:20:24 12th_Gen_Intel_Core_i7-1260P HUAWEI-BOOK CPU_Package Temperature_12 94
+02/10/2024-19:29:04 12th_Gen_Intel_Core_i7-1260P HUAWEI-BOOK CPU_Package Temperature_12 99
+02/10/2024-19:30:20 12th_Gen_Intel_Core_i7-1260P HUAWEI-BOOK CPU_Package Temperature_12 98
+02/10/2024-19:30:32 12th_Gen_Intel_Core_i7-1260P HUAWEI-BOOK CPU_Package Temperature_12 92
+```
+
 ## 📈 Charts
 
 The Grafana alternative (used **WinForms**) to create graphs from data obtained with the [Ookla-SpeedTest](https://github.com/Lifailon/Ookla-SpeedTest-API) module.
